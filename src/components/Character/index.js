@@ -13,12 +13,12 @@ const Character = ({
   expandedItem,
 }) => {
   const handleExpansion = () => {
-    expandedItem === index ? setExpandedItem(null) : setExpandedItem(index);
+    expandedItem === name ? setExpandedItem(null) : setExpandedItem(name);
   };
   return (
     <Wrapper>
       <h2 onClick={handleExpansion}>{name}</h2>
-      {expandedItem === index && (
+      {expandedItem === name && (
         <>
           <p>Birth Year: {birth}</p>
           <p>Height: {height}</p>
