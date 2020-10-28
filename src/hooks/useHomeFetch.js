@@ -16,7 +16,8 @@ export const useHomeFetch = () => {
   const [state, setState] = useState(initialState);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [loadingMore, setLoadingMore] = useState(false);
+  const [loadingPrevious, setLoadingPrevious] = useState(false);
+  const [loadingNext, setLoadingNext] = useState(false);
 
   const fetchPeoples = async (page, searchTerm = "") => {
     try {
@@ -25,11 +26,10 @@ export const useHomeFetch = () => {
 
       const people = await API.fetchPeoples(searchTerm, page);
 
-      setState((prev) => ({
+      setState(() => ({
         page,
         ...people,
-        results:
-          page > 1 ? [...prev.results, ...people.results] : [...people.results],
+        results: [...people.results],
       }));
     } catch (error) {
       setError(true);
@@ -45,11 +45,23 @@ export const useHomeFetch = () => {
 
   // Load more people
   useEffect(() => {
-    if (!loadingMore) return;
+    if (loadingNext) {
+      fetchPeoples(state.page + 1, searchTerm);
+      setLoadingNext(false);
+    }
+    if (loadingPrevious) {
+      fetchPeoples(state.page - 1, searchTerm);
+      setLoadingPrevious(false);
+    }
+  }, [loadingNext, loadingPrevious, searchTerm, state.page]);
 
-    fetchPeoples(state.page + 1, searchTerm);
-    setLoadingMore(false);
-  }, [loadingMore, searchTerm, state.page]);
-
-  return { state, loading, error, searchTerm, setSearchTerm, setLoadingMore };
+  return {
+    state,
+    loading,
+    error,
+    searchTerm,
+    setSearchTerm,
+    setLoadingNext,
+    setLoadingPrevious,
+  };
 };

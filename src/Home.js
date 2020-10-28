@@ -21,13 +21,13 @@ const Home = () => {
     error,
     searchTerm,
     setSearchTerm,
-    setLoadingMore,
+    setLoadingPrevious,
+    setLoadingNext,
   } = useHomeFetch();
   const [expandedItem, setExpandedItem] = useState(null);
+  const total_pages = Math.ceil(state.count / 10);
 
   if (error) return <div>Something went wrong...</div>;
-
-  console.log(state);
 
   return (
     <>
@@ -48,8 +48,18 @@ const Home = () => {
           />
         ))}
         {loading && <Spinner />}
-        {state.results.length < state.count && !loading && (
-          <Button text="Load More" callback={() => setLoadingMore(true)} />
+        <div className="buttons">
+          {state.results.length < state.count && state.previous && !loading && (
+            <Button text="<" callback={() => setLoadingPrevious(true)} />
+          )}
+          {state.results.length < state.count && state.next && !loading && (
+            <Button text=">" callback={() => setLoadingNext(true)} />
+          )}
+        </div>
+        {!loading && state.results.length > 1 && (
+          <p>
+            page {state.page}/{total_pages}
+          </p>
         )}
       </CharacterList>
       {state.results.length < 1 && <NotResult image={NotFoundImage} />}

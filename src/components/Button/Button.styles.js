@@ -3,8 +3,8 @@ import styled from "styled-components";
 export const Wrapper = styled.button`
   display: block;
   background: var(--yellow);
-  width: 25%;
-  min-width: 12.5rem;
+  width: 10%;
+  min-width: 4rem;
   height: 3.75rem;
   border-radius: 1.875rem;
   color: var(--black);

@@ -10,6 +10,11 @@ export const Wrapper = styled.div`
   h2 {
     margin: 0.6rem 0 0 0;
     cursor: pointer;
+
+    :hover {
+      opacity: 0.6;
+    }
+
     @media screen and (max-width: 768px) {
       font-size: var(--fontMedium);
     }
